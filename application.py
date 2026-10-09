@@ -6,7 +6,7 @@ pasta_home = ...
 def converter_csv():
     pasta_home = input("Digite o local dos arquivos txt: ")
     pasta_home = Path(pasta_home)
-    saida = pasta_home.parent / "csvs"
+    saida = pasta_home.parent / "csv_gerado"
     saida.mkdir(exist_ok = True)
 
     arquivo_txttocsv = sorted(pasta_home.glob("*.txt"))
@@ -19,7 +19,7 @@ def converter_csv():
     for arquivo in arquivo_txttocsv:
         try:
             df = pd.read_csv(arquivo, sep="|")
-            df.to_csv(saida / f"{arquivo.stem}.csv", index=False)
+            df.to_csv(saida / f"{arquivo.stem}.csv", sep=";", index=False, encoding="utf-8-sig")
         except Exception as e:
             erros.append((arquivo.name, str(e)))
 
@@ -50,9 +50,9 @@ opc= int(opc)
 if opc == 1:
     converter_csv()
     
-    opc = input("Deseja concatenar os CSV em um unico arquivo [S]im | [N]ão: ").islower()
+    opc = input("Deseja concatenar os CSV em um unico arquivo [S]im | [N]ão: ").upper
     
-    if opc == "s":
+    if opc == "S":
         concatenar_csv()
     else:
         raise SystemExit("Saindo")
